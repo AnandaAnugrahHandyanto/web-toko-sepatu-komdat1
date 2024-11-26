@@ -1,208 +1,327 @@
-<!DOCTYPE html>
 <html lang="id">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katalog Produk - Toko Sepatu</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Katalog Produk - Toko Sepatu
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+            font-family: 'Roboto', sans-serif;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            color: #333;
-        }
-
-        header {
-            background: #00BCD4;
-            color: #fff;
-            padding: 1rem;
-            text-align: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-
-        .product-list {
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .product-list h2 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .product-card {
-            background: #f8f8f8;
-            padding: 1rem;
-            border-radius: 5px;
-            text-align: center;
-            transition: box-shadow 0.3s;
-        }
-
-        .product-card:hover {
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-card img {
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
             width: 100%;
-            height: auto;
-            border-radius: 5px;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
         }
-
-        .product-card h3 {
-            font-size: 1.2rem;
-            margin: 0.5rem 0;
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
         }
-
-        .product-card p {
-            color: #ff4500;
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
             font-weight: bold;
-            margin: 0.3rem 0;
         }
-
-        .product-card button {
-            padding: 0.5rem 1rem;
-            background-color: #333;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
             cursor: pointer;
-            transition: background 0.3s;
+        }
+  </style>
+ </head>
+ <body class="bg-gray-100">
+  <header class="bg-cyan-500 text-white p-4 flex justify-between items-center">
+   <div class="logo text-2xl font-bold">
+    Toko Sepatu
+   </div>
+   <div class="relative">
+    <button class="text-white text-2xl relative" onclick="toggleCart()">
+     <i class="fas fa-shopping-cart">
+     </i>
+     <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1" id="cart-badge" style="display: none;">
+      0
+     </span>
+    </button>
+   </div>
+  </header>
+  <section class="product-list py-8 text-center">
+   <h2 class="text-3xl font-bold mb-6">
+    Katalog Produk Kami
+   </h2>
+   <div class="product-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
+    <div class="product-card bg-white p-4 rounded shadow hover:shadow-lg transition-shadow">
+     <img alt="Sepatu Kasual Nike berwarna hitam dan putih" class="w-full h-48 object-cover rounded" height="200" src="https://storage.googleapis.com/a1aa/image/nb6Vekgi2xwibKue6l7Fq0tJuomcGERCk0kp7TSZ12AFiOzTA.jpg" width="300"/>
+     <h3 class="text-xl font-bold mt-4">
+      Sepatu Kasual Nike
+     </h3>
+     <p class="text-orange-500 font-bold mt-2">
+      Rp 250.000
+     </p>
+     <button class="bg-gray-800 text-white px-4 py-2 rounded mt-4" onclick="addToCart('Sepatu Kasual Nike', 250000)">
+      Tambah ke Troli
+     </button>
+     <p class="text-gray-600 mt-2">
+      Stok:
+      <span id="stock-sepatu-kasual-nike">
+       10
+      </span>
+     </p>
+    </div>
+    <div class="product-card bg-white p-4 rounded shadow hover:shadow-lg transition-shadow">
+     <img alt="Sepatu Olahraga Adidas berwarna putih dan hitam" class="w-full h-48 object-cover rounded" height="200" src="https://storage.googleapis.com/a1aa/image/MmOqVd6dTLYmFdvA4sP71YM5rzKVE1fZAex2FJfkUmUUEdmnA.jpg" width="300"/>
+     <h3 class="text-xl font-bold mt-4">
+      Sepatu Olahraga Adidas
+     </h3>
+     <p class="text-orange-500 font-bold mt-2">
+      Rp 300.000
+     </p>
+     <button class="bg-gray-800 text-white px-4 py-2 rounded mt-4" onclick="addToCart('Sepatu Olahraga Adidas', 300000)">
+      Tambah ke Troli
+     </button>
+     <p class="text-gray-600 mt-2">
+      Stok:
+      <span id="stock-sepatu-olahraga-adidas">
+       10
+      </span>
+     </p>
+    </div>
+    <div class="product-card bg-white p-4 rounded shadow hover:shadow-lg transition-shadow">
+     <img alt="Sepatu Formal berwarna hitam" class="w-full h-48 object-cover rounded" height="200" src="https://storage.googleapis.com/a1aa/image/mEljGDddDAJKLBVV70H8ERUT7tyTVsBAf96nrzdbUZWBRn5JA.jpg" width="300"/>
+     <h3 class="text-xl font-bold mt-4">
+      Sepatu Formal
+     </h3>
+     <p class="text-orange-500 font-bold mt-2">
+      Rp 350.000
+     </p>
+     <button class="bg-gray-800 text-white px-4 py-2 rounded mt-4" onclick="addToCart('Sepatu Formal', 350000)">
+      Tambah ke Troli
+     </button>
+     <p class="text-gray-600 mt-2">
+      Stok:
+      <span id="stock-sepatu-formal">
+       10
+      </span>
+     </p>
+    </div>
+    <div class="product-card bg-white p-4 rounded shadow hover:shadow-lg transition-shadow">
+     <img alt="Sepatu Sneakers berwarna putih" class="w-full h-48 object-cover rounded" height="200" src="https://storage.googleapis.com/a1aa/image/2YmfUhen5Xpy2EYARebVeLk27MK5HIgjOOBNN6ieuZZzQ0ZeE.jpg" width="300"/>
+     <h3 class="text-xl font-bold mt-4">
+      Sepatu Sneakers
+     </h3>
+     <p class="text-orange-500 font-bold mt-2">
+      Rp 400.000
+     </p>
+     <button class="bg-gray-800 text-white px-4 py-2 rounded mt-4" onclick="addToCart('Sepatu Sneakers', 400000)">
+      Tambah ke Troli
+     </button>
+     <p class="text-gray-600 mt-2">
+      Stok:
+      <span id="stock-sepatu-sneakers">
+       10
+      </span>
+     </p>
+    </div>
+    <div class="product-card bg-white p-4 rounded shadow hover:shadow-lg transition-shadow">
+     <img alt="Sepatu Boots berwarna coklat" class="w-full h-48 object-cover rounded" height="200" src="https://storage.googleapis.com/a1aa/image/noqARECTDTb9BZm7fZrqdQ7mus7y86eN43N0dM9LRcvIiOzTA.jpg" width="300"/>
+     <h3 class="text-xl font-bold mt-4">
+      Sepatu Boots
+     </h3>
+     <p class="text-orange-500 font-bold mt-2">
+      Rp 450.000
+     </p>
+     <button class="bg-gray-800 text-white px-4 py-2 rounded mt-4" onclick="addToCart('Sepatu Boots', 450000)">
+      Tambah ke Troli
+     </button>
+     <p class="text-gray-600 mt-2">
+      Stok:
+      <span id="stock-sepatu-boots">
+       10
+      </span>
+     </p>
+    </div>
+   </div>
+  </section>
+  <footer class="bg-cyan-400 text-white text-center p-4 mt-8">
+   <p>
+    © 2024 Toko Sepatu by Alifia & Antonita. All Rights Reserved.
+   </p>
+  </footer>
+  <div class="modal" id="cart-modal">
+   <div class="modal-content">
+    <span class="close" onclick="toggleCart()">
+     &times;
+    </span>
+    <h2 class="text-xl font-bold text-gray-600 mb-4">
+     Troli Anda
+    </h2>
+    <div id="cart-items">
+     <p class="text-gray-600">
+      Troli Anda kosong.
+     </p>
+    </div>
+    <div class="mt-4">
+     <p class="text-gray-800 font-bold" id="total-items">
+      Jumlah Barang: 0
+     </p>
+     <p class="text-gray-800 font-bold" id="total-price">
+      Total Harga: Rp 0
+     </p>
+    </div>
+   </div>
+  </div>
+  <div class="modal" id="out-of-stock-modal">
+   <div class="modal-content">
+    <span class="close" onclick="toggleOutOfStockModal()">
+     &times;
+    </span>
+    <h2 class="text-xl font-bold text-gray-600 mb-4">
+     Stok Habis
+    </h2>
+    <p class="text-gray-600">
+     Maaf, stok barang yang Anda pilih sudah habis.
+    </p>
+   </div>
+  </div>
+  <script>
+   let cart = [];
+        let stock = {
+            'Sepatu Kasual Nike': 10,
+            'Sepatu Olahraga Adidas': 10,
+            'Sepatu Formal': 10,
+            'Sepatu Sneakers': 10,
+            'Sepatu Boots': 10
+        };
+
+        function addToCart(item, price) {
+            const existingItem = cart.find(cartItem => cartItem.item === item);
+            if (stock[item] > 0) {
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    cart.push({ item, price, quantity: 1 });
+                }
+                stock[item]--;
+                updateCart();
+                updateStock();
+            } else {
+                toggleOutOfStockModal();
+            }
         }
 
-        .product-card button:hover {
-            background-color: #555;
+        function updateCart() {
+            const cartElement = document.getElementById('cart-items');
+            const totalItemsElement = document.getElementById('total-items');
+            const totalPriceElement = document.getElementById('total-price');
+            const cartBadge = document.getElementById('cart-badge');
+
+            cartElement.innerHTML = '';
+            if (cart.length === 0) {
+                cartElement.innerHTML = '<p class="text-gray-600">Troli Anda kosong.</p>';
+                cartBadge.style.display = 'none';
+            } else {
+                let totalItems = 0;
+                let totalPrice = 0;
+                cart.forEach(cartItem => {
+                    totalItems += cartItem.quantity;
+                    totalPrice += cartItem.price * cartItem.quantity;
+
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'flex justify-between items-center mt-2';
+                    itemElement.innerHTML = `
+                        <span class="text-gray-600">${cartItem.item}</span>
+                        <div class="flex items-center space-x-2">
+                            <button class="bg-gray-300 text-gray-800 px-2 rounded" onclick="changeQuantity('${cartItem.item}', -1)">-</button>
+                            <span>${cartItem.quantity}</span>
+                            <button class="bg-gray-300 text-gray-800 px-2 rounded" onclick="changeQuantity('${cartItem.item}', 1)">+</button>
+                        </div>
+                        <span class="text-gray-600">Rp ${(cartItem.price * cartItem.quantity).toLocaleString()}</span>
+                        <button class="text-red-500" onclick="removeFromCart('${cartItem.item}')"><i class="fas fa-trash"></i></button>
+                    `;
+                    cartElement.appendChild(itemElement);
+                });
+                totalItemsElement.innerText = `Jumlah Barang: ${totalItems}`;
+                totalPriceElement.innerText = `Total Harga: Rp ${totalPrice.toLocaleString()}`;
+                cartBadge.innerText = totalItems;
+                cartBadge.style.display = 'block';
+            }
         }
 
-        footer {
-            background: #00BCD4;
-            color: #fff;
-            text-align: center;
-            padding: 1rem;
-            margin-top: 2rem;
+        function changeQuantity(item, change) {
+            const cartItem = cart.find(cartItem => cartItem.item === item);
+            if (cartItem) {
+                if (change === 1 && stock[item] > 0) {
+                    cartItem.quantity++;
+                    stock[item]--;
+                } else if (change === -1 && cartItem.quantity > 0) {
+                    cartItem.quantity--;
+                    stock[item]++;
+                    if (cartItem.quantity === 0) {
+                        cart = cart.filter(c => c.item !== item);
+                    }
+                }
+                updateCart();
+                updateStock();
+            }
         }
-    </style>
-</head>
 
-<body>
-    <header>
-        <div class="logo">Toko Sepatu</div>
-    </header>
+        function removeFromCart(item) {
+            const cartItem = cart.find(cartItem => cartItem.item === item);
+            if (cartItem) {
+                stock[item] += cartItem.quantity;
+                cart = cart.filter(c => c.item !== item);
+                updateCart();
+                updateStock();
+            }
+        }
 
-    <section class="product-list">
-        <h2>Katalog Produk Kami</h2>
-        <div class="product-grid">
-            <div class="product-card">
-                <img src="image/sepatu_nike.jpeg" alt="Sepatu Kasual">
-                <h3>Sepatu Kasual Nike</h3>
-                <p>Rp 250.000</p>
-                <button>Detail Produk</button>
-                <svg height="15px" width="15px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 58 58" xml:space="preserve">
-                    <g>
-                        <path style="fill:#2CB742;" d="M0,58l4.988-14.963C2.457,38.78,1,33.812,1,28.5C1,12.76,13.76,0,29.5,0S58,12.76,58,28.5
-		S45.24,57,29.5,57c-4.789,0-9.299-1.187-13.26-3.273L0,58z" />
-                        <path style="fill:#FFFFFF;" d="M47.683,37.985c-1.316-2.487-6.169-5.331-6.169-5.331c-1.098-0.626-2.423-0.696-3.049,0.42
-		c0,0-1.577,1.891-1.978,2.163c-1.832,1.241-3.529,1.193-5.242-0.52l-3.981-3.981l-3.981-3.981c-1.713-1.713-1.761-3.41-0.52-5.242
-		c0.272-0.401,2.163-1.978,2.163-1.978c1.116-0.627,1.046-1.951,0.42-3.049c0,0-2.844-4.853-5.331-6.169
-		c-1.058-0.56-2.357-0.364-3.203,0.482l-1.758,1.758c-5.577,5.577-2.831,11.873,2.746,17.45l5.097,5.097l5.097,5.097
-		c5.577,5.577,11.873,8.323,17.45,2.746l1.758-1.758C48.048,40.341,48.243,39.042,47.683,37.985z" />
-                    </g>
-                </svg>
-            </div>
-            <div class="product-card">
-                <img src="image/kasual_addidas.jpeg" alt="Sepatu Olahraga">
-                <h3>Sepatu Olahraga</h3>
-                <p>Rp 300.000</p>
-                <button>Detail Produk</button>
-                <svg height="15px" width="15px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 58 58" xml:space="preserve">
-                    <g>
-                        <path style="fill:#2CB742;" d="M0,58l4.988-14.963C2.457,38.78,1,33.812,1,28.5C1,12.76,13.76,0,29.5,0S58,12.76,58,28.5
-		S45.24,57,29.5,57c-4.789,0-9.299-1.187-13.26-3.273L0,58z" />
-                        <path style="fill:#FFFFFF;" d="M47.683,37.985c-1.316-2.487-6.169-5.331-6.169-5.331c-1.098-0.626-2.423-0.696-3.049,0.42
-		c0,0-1.577,1.891-1.978,2.163c-1.832,1.241-3.529,1.193-5.242-0.52l-3.981-3.981l-3.981-3.981c-1.713-1.713-1.761-3.41-0.52-5.242
-		c0.272-0.401,2.163-1.978,2.163-1.978c1.116-0.627,1.046-1.951,0.42-3.049c0,0-2.844-4.853-5.331-6.169
-		c-1.058-0.56-2.357-0.364-3.203,0.482l-1.758,1.758c-5.577,5.577-2.831,11.873,2.746,17.45l5.097,5.097l5.097,5.097
-		c5.577,5.577,11.873,8.323,17.45,2.746l1.758-1.758C48.048,40.341,48.243,39.042,47.683,37.985z" />
-                    </g>
-                </svg>
-            </div>
-            <div class="product-card">
-                <img src="images/shoe3.jpg" alt="Sepatu Formal">
-                <h3>Sepatu Formal</h3>
-                <p>Rp 350.000</p>
-                <button>Detail Produk</button>
-                <svg height="15px" width="15px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 58 58" xml:space="preserve">
-                    <g>
-                        <path style="fill:#2CB742;" d="M0,58l4.988-14.963C2.457,38.78,1,33.812,1,28.5C1,12.76,13.76,0,29.5,0S58,12.76,58,28.5
-		S45.24,57,29.5,57c-4.789,0-9.299-1.187-13.26-3.273L0,58z" />
-                        <path style="fill:#FFFFFF;" d="M47.683,37.985c-1.316-2.487-6.169-5.331-6.169-5.331c-1.098-0.626-2.423-0.696-3.049,0.42
-		c0,0-1.577,1.891-1.978,2.163c-1.832,1.241-3.529,1.193-5.242-0.52l-3.981-3.981l-3.981-3.981c-1.713-1.713-1.761-3.41-0.52-5.242
-		c0.272-0.401,2.163-1.978,2.163-1.978c1.116-0.627,1.046-1.951,0.42-3.049c0,0-2.844-4.853-5.331-6.169
-		c-1.058-0.56-2.357-0.364-3.203,0.482l-1.758,1.758c-5.577,5.577-2.831,11.873,2.746,17.45l5.097,5.097l5.097,5.097
-		c5.577,5.577,11.873,8.323,17.45,2.746l1.758-1.758C48.048,40.341,48.243,39.042,47.683,37.985z" />
-                    </g>
-                </svg>
-            </div>
-            <div class="product-card">
-                <img src="images/shoe4.jpg" alt="Sepatu Sneakers">
-                <h3>Sepatu Sneakers</h3>
-                <p>Rp 400.000</p>
-                <button>Detail Produk</button>
-                <svg height="15px" width="15px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 58 58" xml:space="preserve">
-                    <g>
-                        <path style="fill:#2CB742;" d="M0,58l4.988-14.963C2.457,38.78,1,33.812,1,28.5C1,12.76,13.76,0,29.5,0S58,12.76,58,28.5
-		S45.24,57,29.5,57c-4.789,0-9.299-1.187-13.26-3.273L0,58z" />
-                        <path style="fill:#FFFFFF;" d="M47.683,37.985c-1.316-2.487-6.169-5.331-6.169-5.331c-1.098-0.626-2.423-0.696-3.049,0.42
-		c0,0-1.577,1.891-1.978,2.163c-1.832,1.241-3.529,1.193-5.242-0.52l-3.981-3.981l-3.981-3.981c-1.713-1.713-1.761-3.41-0.52-5.242
-		c0.272-0.401,2.163-1.978,2.163-1.978c1.116-0.627,1.046-1.951,0.42-3.049c0,0-2.844-4.853-5.331-6.169
-		c-1.058-0.56-2.357-0.364-3.203,0.482l-1.758,1.758c-5.577,5.577-2.831,11.873,2.746,17.45l5.097,5.097l5.097,5.097
-		c5.577,5.577,11.873,8.323,17.45,2.746l1.758-1.758C48.048,40.341,48.243,39.042,47.683,37.985z" />
-                    </g>
-                </svg>
-            </div>
-            <div class="product-card">
-                <img src="images/shoe5.jpg" alt="Sepatu Boots">
-                <h3>Sepatu Boots</h3>
-                <p>Rp 450.000</p>
-                <button>Detail Produk</button>
-                <svg height="15px" width="15px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 58 58" xml:space="preserve">
-                    <g>
-                        <path style="fill:#2CB742;" d="M0,58l4.988-14.963C2.457,38.78,1,33.812,1,28.5C1,12.76,13.76,0,29.5,0S58,12.76,58,28.5
-		S45.24,57,29.5,57c-4.789,0-9.299-1.187-13.26-3.273L0,58z" />
-                        <path style="fill:#FFFFFF;" d="M47.683,37.985c-1.316-2.487-6.169-5.331-6.169-5.331c-1.098-0.626-2.423-0.696-3.049,0.42
-		c0,0-1.577,1.891-1.978,2.163c-1.832,1.241-3.529,1.193-5.242-0.52l-3.981-3.981l-3.981-3.981c-1.713-1.713-1.761-3.41-0.52-5.242
-		c0.272-0.401,2.163-1.978,2.163-1.978c1.116-0.627,1.046-1.951,0.42-3.049c0,0-2.844-4.853-5.331-6.169
-		c-1.058-0.56-2.357-0.364-3.203,0.482l-1.758,1.758c-5.577,5.577-2.831,11.873,2.746,17.45l5.097,5.097l5.097,5.097
-		c5.577,5.577,11.873,8.323,17.45,2.746l1.758-1.758C48.048,40.341,48.243,39.042,47.683,37.985z" />
-                    </g>
-                </svg>
-            </div>
-            <!-- Tambahkan lebih banyak produk di sini -->
-        </div>
-    </section>
+        function updateStock() {
+            document.getElementById('stock-sepatu-kasual-nike').innerText = stock['Sepatu Kasual Nike'];
+            document.getElementById('stock-sepatu-olahraga-adidas').innerText = stock['Sepatu Olahraga Adidas'];
+            document.getElementById('stock-sepatu-formal').innerText = stock['Sepatu Formal'];
+            document.getElementById('stock-sepatu-sneakers').innerText = stock['Sepatu Sneakers'];
+            document.getElementById('stock-sepatu-boots').innerText = stock['Sepatu Boots'];
+        }
 
-    <footer>
-        <p>&copy; 2024 Toko Sepatu by Alifia & Antonita. All Rights Reserved.</p>
-    </footer>
-</body>
+        function toggleCart() {
+            const cartModal = document.getElementById('cart-modal');
+            cartModal.style.display = cartModal.style.display === 'block' ? 'none' : 'block';
+        }
 
+        function toggleOutOfStockModal() {
+            const outOfStockModal = document.getElementById('out-of-stock-modal');
+            outOfStockModal.style.display = outOfStockModal.style.display === 'block' ? 'none' : 'block';
+        }
+
+        window.onclick = function(event) {
+            const cartModal = document.getElementById('cart-modal');
+            const outOfStockModal = document.getElementById('out-of-stock-modal');
+            if (event.target === cartModal) {
+                cartModal.style.display = 'none';
+            }
+            if (event.target === outOfStockModal) {
+                outOfStockModal.style.display = 'none';
+            }
+        }
+  </script>
+ </body>
 </html>
+
